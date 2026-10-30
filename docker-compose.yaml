@@ -1,0 +1,19 @@
+services:
+  postgres:                         # Service name
+    image: postgres            # PostgreSQL Docker image
+    container_name: judginger-postgres         # Container name
+    restart: unless-stopped         # Restart automatically unless manually stopped
+
+    environment:
+      POSTGRES_USER: admin           # Database username
+      POSTGRES_PASSWORD: password123 # Database password (change this)
+      POSTGRES_DB: judginger         # Database created on first startup
+
+    ports:
+      - "5434:5432"                  # Host port : Container port
+
+    volumes:
+      - postgres_data:/var/lib/postgresql # Persist database files
+
+volumes:
+  postgres_data:                     # Named Docker volume
