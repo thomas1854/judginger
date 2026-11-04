@@ -4,9 +4,11 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import project.judginger.dto.SubmissionRequest;
 import project.judginger.dto.SubmissionResponse;
+import project.judginger.model.Submission;
 import project.judginger.services.SubmissionService;
 
 import java.io.IOException;
+import java.util.List;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -22,5 +24,11 @@ public class SubmissionController {
     @PostMapping("/problems/{problemId}/submissions")
     SubmissionResponse submit(@PathVariable String problemId, @RequestPart("submission") SubmissionRequest submissionRequest, @RequestPart("file") MultipartFile submissionFile) throws IOException, InterruptedException {
         return submissionService.submit(submissionRequest, problemId, submissionFile);
+    }
+
+    @GetMapping("/submissions")
+    List<Submission> getAllSubmissions()
+    {
+        return submissionService.getAllSubmissions();
     }
 }

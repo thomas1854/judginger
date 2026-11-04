@@ -15,6 +15,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class ProblemService {
@@ -91,5 +92,11 @@ public class ProblemService {
         buildProblem(problem.getProblemKey(), problem.getTimeLimit(), problem.getMemoryLimit());
 
         return problemRepository.save(problem);
+    }
+
+
+    public List<Problem> getAllProblems()
+    {
+        return problemRepository.findAll();
     }
 }

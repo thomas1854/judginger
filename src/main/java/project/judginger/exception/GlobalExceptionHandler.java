@@ -37,4 +37,11 @@ public class GlobalExceptionHandler
     {
         return Map.of("error", invalidFileException.getMessage());
     }
+
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public Map<String, String> handleResourceNotFoundException(ResourceNotFoundException resourceNotFoundException)
+    {
+        return Map.of("error", resourceNotFoundException.getMessage());
+    }
 }

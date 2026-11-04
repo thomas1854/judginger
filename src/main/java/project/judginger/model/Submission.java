@@ -15,15 +15,15 @@ public class Submission {
     private Integer timeLimit;      // Time Limit in seconds
     private String verdict;         // Final verdict of the submission
     private String test;            // The wrong test
-    private String executionTime;   // Execution time in seconds
-    private String executionMemory; // Execution memory in kilobytes
+    private Integer executionTime;   // Execution time in seconds
+    private Integer executionMemory; // Execution memory in kilobytes
     final private LocalDateTime submittedAt;
 
     public Submission() {
         this.submittedAt = LocalDateTime.now();
     }
 
-    public Submission(Long submissionId, Integer memoryLimit, Integer timeLimit, String verdict, String test, String executionTime, String executionMemory) {
+    public Submission(Long submissionId, Integer memoryLimit, Integer timeLimit, String verdict, String test, Integer executionTime, Integer executionMemory) {
         this.submissionId = submissionId;
         this.memoryLimit = memoryLimit;
         this.timeLimit = timeLimit;
@@ -74,19 +74,19 @@ public class Submission {
         this.test = test;
     }
 
-    public String getExecutionTime() {
+    public Integer getExecutionTime() {
         return executionTime;
     }
 
-    public void setExecutionTime(String executionTime) {
+    public void setExecutionTime(Integer executionTime) {
         this.executionTime = executionTime;
     }
 
-    public String getExecutionMemory() {
+    public Integer getExecutionMemory() {
         return executionMemory;
     }
 
-    public void setExecutionMemory(String executionMemory) {
+    public void setExecutionMemory(Integer executionMemory) {
         this.executionMemory = executionMemory;
     }
 

@@ -7,13 +7,13 @@ public class SubmissionResponse
     private UUID submissionId;
     private String verdict;
     private String test;
-    private String time;
-    private String memory;
+    private Integer time;
+    private Integer memory;
 
     public SubmissionResponse() {
     }
 
-    public SubmissionResponse(UUID submissionId, String verdict, String test, String time, String memory) {
+    public SubmissionResponse(UUID submissionId, String verdict, String test, Integer time, Integer memory) {
         this.submissionId = submissionId;
         this.verdict = verdict;
         this.test = test;
@@ -45,19 +45,19 @@ public class SubmissionResponse
         this.verdict = verdict;
     }
 
-    public String getTime() {
+    public Integer getTime() {
         return time;
     }
 
-    public void setTime(String time) {
+    public void setTime(Integer time) {
         this.time = time;
     }
 
-    public String getMemory() {
+    public Integer getMemory() {
         return memory;
     }
 
-    public void setMemory(String memory) {
+    public void setMemory(Integer memory) {
         this.memory = memory;
     }
 }

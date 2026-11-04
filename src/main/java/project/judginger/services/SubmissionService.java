@@ -6,7 +6,9 @@ import org.springframework.web.multipart.MultipartFile;
 import project.judginger.dto.SubmissionRequest;
 import project.judginger.dto.SubmissionResponse;
 import project.judginger.exception.InvalidFileTypeException;
+import project.judginger.exception.ResourceNotFoundException;
 import project.judginger.model.Submission;
+import project.judginger.repository.ProblemRepository;
 import project.judginger.repository.SubmissionRepository;
 
 import java.io.File;
@@ -14,14 +16,17 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.UUID;
 
 @Service
 public class SubmissionService {
     private final SubmissionRepository submissionRepository;
+    private final ProblemRepository problemRepository;
 
-    public SubmissionService(SubmissionRepository submissionRepository) {
+    public SubmissionService(SubmissionRepository submissionRepository, ProblemRepository problemRepository) {
         this.submissionRepository = submissionRepository;
+        this.problemRepository = problemRepository;
     }
 
     private String run(UUID submissionId, String problemId, Integer timeLimit, Integer memoryLimit) throws IOException, InterruptedException {
@@ -51,10 +56,13 @@ public class SubmissionService {
     }
 
     public SubmissionResponse submit(SubmissionRequest submissionRequest, String problemId, MultipartFile submissionFile) throws IOException, InterruptedException {
-        UUID submissionId = UUID.randomUUID();
+        if (!problemRepository.existsByProblemKey(problemId))
+            throw new ResourceNotFoundException("problem key " + problemId + " is not found");
 
         if (!"cpp".equalsIgnoreCase(StringUtils.getFilenameExtension(submissionFile.getOriginalFilename())))
             throw new InvalidFileTypeException("Submitted solution file must have the .cpp extension.");
+
+        UUID submissionId = UUID.randomUUID();
 
         buildSubmissionDirectory(submissionId, submissionFile);
 
@@ -73,15 +81,15 @@ public class SubmissionService {
         else if (stats.length == 3)
         {
             submissionResponse.setVerdict(stats[0].trim());
-            submissionResponse.setTime(stats[1].trim());
-            submissionResponse.setMemory(stats[2].trim());
+            submissionResponse.setTime((int) (Double.parseDouble(stats[1].trim()) * 1000));
+            submissionResponse.setMemory(Integer.parseInt(stats[2].trim()));
         }
         else
         {
             submissionResponse.setVerdict(stats[0].trim());
             submissionResponse.setTest(stats[1].trim());
-            submissionResponse.setTime(stats[2].trim());
-            submissionResponse.setMemory(stats[3].trim());
+            submissionResponse.setTime((int) (Double.parseDouble(stats[2].trim()) * 1000));
+            submissionResponse.setMemory(Integer.parseInt(stats[3].trim()));
         }
 
         Submission submission = new Submission();
@@ -95,5 +103,9 @@ public class SubmissionService {
 
         submissionRepository.save(submission);
         return submissionResponse;
+    }
+
+    public List<Submission> getAllSubmissions() {
+        return submissionRepository.findAll();
     }
 }
