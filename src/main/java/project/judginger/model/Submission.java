@@ -17,13 +17,14 @@ public class Submission {
     private String test;            // The wrong test
     private Integer executionTime;   // Execution time in seconds
     private Integer executionMemory; // Execution memory in kilobytes
+    private String problemKey;
     final private LocalDateTime submittedAt;
 
     public Submission() {
         this.submittedAt = LocalDateTime.now();
     }
 
-    public Submission(Long submissionId, Integer memoryLimit, Integer timeLimit, String verdict, String test, Integer executionTime, Integer executionMemory) {
+    public Submission(Long submissionId, Integer memoryLimit, Integer timeLimit, String verdict, String test, Integer executionTime, Integer executionMemory, String problemKey) {
         this.submissionId = submissionId;
         this.memoryLimit = memoryLimit;
         this.timeLimit = timeLimit;
@@ -31,7 +32,16 @@ public class Submission {
         this.test = test;
         this.executionTime = executionTime;
         this.executionMemory = executionMemory;
+        this.problemKey = problemKey;
         this.submittedAt = LocalDateTime.now();
+    }
+
+    public String getProblemKey() {
+        return problemKey;
+    }
+
+    public void setProblemKey(String problemKey) {
+        this.problemKey = problemKey;
     }
 
     public Long getSubmissionId() {

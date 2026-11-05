@@ -5,6 +5,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import project.judginger.dto.SubmissionRequest;
 import project.judginger.dto.SubmissionResponse;
+import project.judginger.exception.FileSizeLimitExceededException;
 import project.judginger.exception.InvalidFileTypeException;
 import project.judginger.exception.ResourceNotFoundException;
 import project.judginger.model.Submission;
@@ -23,6 +24,8 @@ import java.util.UUID;
 public class SubmissionService {
     private final SubmissionRepository submissionRepository;
     private final ProblemRepository problemRepository;
+    private static final int MAX_SUBMISSION_SIZE = 2 * 1024 * 1024; // 2 MB
+
 
     public SubmissionService(SubmissionRepository submissionRepository, ProblemRepository problemRepository) {
         this.submissionRepository = submissionRepository;
@@ -62,11 +65,14 @@ public class SubmissionService {
         if (!"cpp".equalsIgnoreCase(StringUtils.getFilenameExtension(submissionFile.getOriginalFilename())))
             throw new InvalidFileTypeException("Submitted solution file must have the .cpp extension.");
 
+        if (submissionFile.getSize() > MAX_SUBMISSION_SIZE)
+            throw new FileSizeLimitExceededException("Submission file size must not exceed 2 MB.");
+
         UUID submissionId = UUID.randomUUID();
 
         buildSubmissionDirectory(submissionId, submissionFile);
 
-        String output = run(submissionId, problemId, submissionRequest.timeLimit(), submissionRequest.memoryLimit());
+        String output = run(submissionId, problemId, submissionRequest.time_limit(), submissionRequest.memory_limit());
 
         SubmissionResponse submissionResponse = new SubmissionResponse();
         submissionResponse.setSubmissionId(submissionId);
@@ -95,11 +101,11 @@ public class SubmissionService {
         Submission submission = new Submission();
         submission.setExecutionTime(submissionResponse.getTime());
         submission.setExecutionMemory(submissionResponse.getMemory());
-        submission.setMemoryLimit(submissionRequest.memoryLimit());
-        submission.setTimeLimit(submissionRequest.timeLimit());
+        submission.setMemoryLimit(submissionRequest.memory_limit());
+        submission.setTimeLimit(submissionRequest.time_limit());
         submission.setVerdict(submissionResponse.getVerdict());
         submission.setTest(submissionResponse.getTest());
-
+        submission.setProblemKey(problemId);
 
         submissionRepository.save(submission);
         return submissionResponse;

@@ -9,6 +9,7 @@ import project.judginger.services.ProblemService;
 import java.io.IOException;
 import java.util.List;
 
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/problems")
 public class ProblemController {

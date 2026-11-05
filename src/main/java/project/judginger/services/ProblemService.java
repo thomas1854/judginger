@@ -3,6 +3,7 @@ package project.judginger.services;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
+import project.judginger.exception.FileSizeLimitExceededException;
 import project.judginger.exception.InvalidFileTypeException;
 import project.judginger.exception.ProblemBuildException;
 import project.judginger.exception.ProblemKeyExistsException;
@@ -20,6 +21,8 @@ import java.util.List;
 @Service
 public class ProblemService {
     private final ProblemRepository problemRepository;
+    private static final int MAX_MAIN_SOLUTION_SIZE = 2 * 1024 * 1024;
+    private static final int MAX_TEST_INPUT_SIZE = 20 * 1024 * 1024;
 
     public ProblemService(ProblemRepository problemRepository) {
         this.problemRepository = problemRepository;
@@ -78,6 +81,9 @@ public class ProblemService {
         if (!"cpp".equalsIgnoreCase(StringUtils.getFilenameExtension(mainSolutionFile.getOriginalFilename())))
             throw new InvalidFileTypeException("Main solution file must have the .cpp extension.");
 
+        if (mainSolutionFile.getSize() > MAX_MAIN_SOLUTION_SIZE)
+            throw new FileSizeLimitExceededException("Main solution file size must not exceed 2 MB.");
+
         for (MultipartFile inputFile : inputFiles)
         {
             if (inputFile.isEmpty())
@@ -85,6 +91,9 @@ public class ProblemService {
 
             if (!"in".equalsIgnoreCase(StringUtils.getFilenameExtension(inputFile.getOriginalFilename())))
                 throw new InvalidFileTypeException("Input files must have the .in extension.");
+
+            if (inputFile.getSize() > MAX_TEST_INPUT_SIZE)
+                throw new FileSizeLimitExceededException("Input file size must not exceed 20 MB.");
         }
 
         buildProblemDirectory(problem.getProblemKey(), mainSolutionFile, inputFiles);
