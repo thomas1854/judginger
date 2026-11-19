@@ -3,10 +3,7 @@ package project.judginger.services;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
-import project.judginger.exception.FileSizeLimitExceededException;
-import project.judginger.exception.InvalidFileTypeException;
-import project.judginger.exception.ProblemBuildException;
-import project.judginger.exception.ProblemKeyExistsException;
+import project.judginger.exception.*;
 import project.judginger.model.Problem;
 import project.judginger.repository.ProblemRepository;
 
@@ -107,5 +104,15 @@ public class ProblemService {
     public List<Problem> getAllProblems()
     {
         return problemRepository.findAll();
+    }
+
+    public Problem getProblem(String problemKey) {
+        return problemRepository.findByProblemKey(problemKey).orElseThrow(() -> new ResourceNotFoundException("Problem key not found."));
+    }
+
+    public void deleteProblem(String problemKey) throws IOException {
+        project.judginger.model.Problem problem = problemRepository.findByProblemKey(problemKey).orElseThrow(() -> new ResourceNotFoundException("Problem key not found."));
+        destroyProblemDirectory(problemKey);
+        problemRepository.deleteById(problem.getProblemId());
     }
 }

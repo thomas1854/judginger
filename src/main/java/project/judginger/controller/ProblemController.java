@@ -8,6 +8,7 @@ import project.judginger.services.ProblemService;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -28,5 +29,17 @@ public class ProblemController {
     List<Problem> getAllProblems()
     {
         return problemService.getAllProblems();
+    }
+
+    @GetMapping("{problemKey}")
+    Problem getProblem(@PathVariable String problemKey)
+    {
+        return problemService.getProblem(problemKey);
+    }
+
+    @DeleteMapping("{problemKey}")
+    Map<String, String> deleteProblem(@PathVariable String problemKey) throws IOException {
+         problemService.deleteProblem(problemKey);
+         return Map.of("message", "Deleted problem " + problemKey + " successfully.");
     }
 }
