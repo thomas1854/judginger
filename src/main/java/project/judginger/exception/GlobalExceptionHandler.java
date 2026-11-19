@@ -16,41 +16,42 @@ public class GlobalExceptionHandler
     @ExceptionHandler(ProblemKeyExistsException.class)
     public Map<String, String> handleProblemKeyExistsException(ProblemKeyExistsException problemKeyExistsException)
     {
-        return Map.of("error", problemKeyExistsException.getMessage());
+        return Map.of("code", "problem-key-exists", "message", problemKeyExistsException.getMessage());
     }
 
     @ResponseStatus(HttpStatus.UNPROCESSABLE_CONTENT)
     @ExceptionHandler(ProblemBuildException.class)
     public Map<String, String> handleProblemBuildException(ProblemBuildException problemBuildException)
     {
-        return Map.of("error", problemBuildException.getMessage());
+        return Map.of("code", "invalid-problem-file", "message", problemBuildException.getMessage());
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(InvalidFileTypeException.class)
-    public Map<String, String> handleProblemBuildException(InvalidFileTypeException invalidFileTypeException)
+    public Map<String, String> handleInvalidFileTypeException(InvalidFileTypeException invalidFileTypeException)
     {
-        return Map.of("error", invalidFileTypeException.getMessage());
+        return Map.of("code", "invalid-file-type", "message", invalidFileTypeException.getMessage());
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(InvalidFileException.class)
-    public Map<String, String> handleProblemBuildException(InvalidFileException invalidFileException)
+    public Map<String, String> handleInvalidFileException(InvalidFileException invalidFileException)
     {
-        return Map.of("error", invalidFileException.getMessage());
+        return Map.of("code", "invalid-file", "message", invalidFileException.getMessage());
     }
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(ResourceNotFoundException.class)
     public Map<String, String> handleResourceNotFoundException(ResourceNotFoundException resourceNotFoundException)
     {
-        return Map.of("error", resourceNotFoundException.getMessage());
+        return Map.of("code", "resource-not-found", "message", resourceNotFoundException.getMessage());
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public Map<String, String> handleValidExceptions(MethodArgumentNotValidException exception) {
+    public Map<String, String> handleMethodArgumentNotValidException(MethodArgumentNotValidException exception) {
         Map<String, String> errors = new HashMap<>();
+        errors.put("code", "argument-not-valid");
         exception.getBindingResult().getFieldErrors().forEach((error) -> {
             errors.put(error.getField(), error.getDefaultMessage());
         });
@@ -62,6 +63,6 @@ public class GlobalExceptionHandler
     @ExceptionHandler(FileSizeLimitExceededException.class)
     public Map<String, String> handleFileSizeLimitExceededException(FileSizeLimitExceededException fileSizeLimitExceededException)
     {
-        return Map.of("error", fileSizeLimitExceededException.getMessage());
+        return Map.of("code", "file-size-limit-exceeded", "message", fileSizeLimitExceededException.getMessage());
     }
 }

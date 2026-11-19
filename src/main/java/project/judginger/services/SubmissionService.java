@@ -68,13 +68,13 @@ public class SubmissionService {
         if (submissionFile.getSize() > MAX_SUBMISSION_SIZE)
             throw new FileSizeLimitExceededException("Submission file size must not exceed 2 MB.");
 
-        UUID submissionId = UUID.randomUUID();
+        SubmissionResponse submissionResponse = new SubmissionResponse();
+        UUID submissionId = submissionResponse.getSubmissionId();
 
         buildSubmissionDirectory(submissionId, submissionFile);
 
         String output = run(submissionId, problemId, submissionRequest.time_limit(), submissionRequest.memory_limit());
 
-        SubmissionResponse submissionResponse = new SubmissionResponse();
         submissionResponse.setSubmissionId(submissionId);
 
         String[] stats = output.split("-");

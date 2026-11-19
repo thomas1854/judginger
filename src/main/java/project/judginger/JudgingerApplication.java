@@ -11,7 +11,6 @@ import java.io.IOException;
 public class JudgingerApplication {
 	public static void main(String[] args) throws IOException, InterruptedException {
 		SpringApplication.run(JudgingerApplication.class, args);
-		// run();
 	}
 
 }

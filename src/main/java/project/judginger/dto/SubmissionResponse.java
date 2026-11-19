@@ -11,10 +11,11 @@ public class SubmissionResponse
     private Integer memory;
 
     public SubmissionResponse() {
+        this.submissionId = UUID.randomUUID();
     }
 
-    public SubmissionResponse(UUID submissionId, String verdict, String test, Integer time, Integer memory) {
-        this.submissionId = submissionId;
+    public SubmissionResponse(String verdict, String test, Integer time, Integer memory) {
+        this.submissionId = UUID.randomUUID();
         this.verdict = verdict;
         this.test = test;
         this.time = time;
