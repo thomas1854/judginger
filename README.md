@@ -189,4 +189,4 @@ Issues and pull requests are welcome. Please open an issue first to discuss larg
 
 ## Related Repository
 
-[Judginger Frontend](https://github.com/thomas1854/judginger-web) - Web interface for the Judginger online judge platform.
+[Judginger Frontend](https://github.com/thomas1854/judginger-web) - Web interface for the Judginger online judge platform. Run the backend server and use the web interface to interact with the system.
