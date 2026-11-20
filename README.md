@@ -188,4 +188,5 @@ Judginger currently runs submitted code **as the server's own user, with no sand
 Issues and pull requests are welcome. Please open an issue first to discuss larger changes.
 
 ## Related Repository
-[Judginger Frontend](https://github.com/thomas1854/judginger-web)
+
+[Judginger Frontend](https://github.com/thomas1854/judginger-web) - Web interface for the Judginger online judge platform.
