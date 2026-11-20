@@ -90,6 +90,10 @@ public class SubmissionService {
             submissionResponse.setTime((int) (Double.parseDouble(stats[1].trim()) * 1000));
             submissionResponse.setMemory(Integer.parseInt(stats[2].trim()));
         }
+        else if (stats.length == 1)
+        {
+            submissionResponse.setVerdict(stats[0].trim());
+        }
         else
         {
             submissionResponse.setVerdict(stats[0].trim());
