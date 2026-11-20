@@ -186,3 +186,6 @@ Judginger currently runs submitted code **as the server's own user, with no sand
 ## Contributing
 
 Issues and pull requests are welcome. Please open an issue first to discuss larger changes.
+
+## Related Repository
+[Judginger Frontend](https://github.com/thomas1854/judginger-web)
